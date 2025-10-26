@@ -156,12 +156,12 @@ async def get_messages(client, message_ids):
     return messages
 
 async def get_message_id(client, message):
-    if message.forward_from_chat:
-        if message.forward_from_chat.id == client.db_channel.id:
+    if message.forward_origin.chat.sender_chat:
+        if message.forward_origin.chat.sender_chat.id == client.db_channel.id:
             return message.forward_from_message_id
         else:
             return 0
-    elif message.forward_sender_name:
+    elif message.forward_origin.sender_user_name:
         return 0
     elif message.text:
         pattern = "https://t.me/(?:c/)?(.*)/(\d+)"
